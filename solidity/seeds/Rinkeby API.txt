@@ -1,0 +1,7 @@
+
+project id: bc9f0a0f50c04156be54a5d68fe4184b
+
+project secret: 78ac458348fe4724822cf7a92ac60b27
+
+endpoint: rinkeby.infura.io/v3/bc9f0a0f50c04156be54a5d68fe4184b
+

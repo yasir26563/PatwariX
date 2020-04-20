@@ -1,9 +1,9 @@
-var express = require('express');
+var express = require("express");
 
 var router = express.Router();
 var app = express();
-var mysql = require('mysql');
-var cors = require('cors');
+var mysql = require("mysql");
+var cors = require("cors");
 app.use(cors());
 var DBRows;
 var conv;
@@ -12,7 +12,6 @@ var conv;
 //
 // // file is included here:
 // eval(fs.readFileSync('routes/web3.min.js')+'');
-
 
 // window.ABI = [
 //
@@ -565,8 +564,12 @@ var conv;
 //
 //
 
-
-
+// var con = mysql.createConnection({
+//   host: "127.0.0.1",
+//   user: "root",
+//   password: "123456789",
+//   database: 'sitepoint'
+// });
 
 var con = mysql.createConnection({
   host: "127.0.0.1",
@@ -574,56 +577,125 @@ var con = mysql.createConnection({
   password: "123456789",
   database: 'sitepoint'
 });
-con.connect(function(err) {
+con.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
-
 });
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get("/", function (req, res, next) {
   res.setHeader("Content-Type", "text/html");
 
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  console.log("Function called")
-  con.query('SELECT * FROM authors', (err,rows) => {
-    if(err) throw err;
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  console.log("Function called");
+  con.query("SELECT * FROM authors", (err, rows) => {
+    if (err) throw err;
 
-    console.log('Data received from Db:');
+    console.log("Data received from Db:");
     console.log(rows);
     DBRows = rows;
 
-    console.log("Data sent")
+    console.log("Data sent");
     res.send(JSON.stringify(DBRows));
     // res.send(DBRows.toJSON());
     //console.log((DBRows.toJSON()));
   });
 });
 
-router.get('/LoginInfo', function(req, res, next) {
+router.get("/LoginInfo", function (req, res, next) {
   res.setHeader("Content-Type", "text/html");
 
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  console.log("Function called")
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  console.log("Function called");
 
+  con.query("SELECT * FROM authors", (err, rows) => {
+    if (err) throw err;
 
-  con.query('SELECT * FROM authors', (err,rows) => {
-    if(err) throw err;
-
-    console.log('Data received from Db:');
+    console.log("Data received from Db:");
     console.log(rows);
     DBRows = rows;
 
-    console.log("Data sent")
-   conv=JSON.stringify(DBRows);
+    console.log("Data sent");
+    conv = JSON.stringify(DBRows);
     JSON.stringify(DBRows);
     // res.send(JSON.stringify(DBRows));
     res.send(pCity());
-
-
   });
+});
 
+router.get("/properties/:id", (req, res, next) => {
+  try {
+    const { id } = req.params;
+    con.query(
+      `SELECT * FROM properties where id=${id};`,
+      (err, [properties]) => {
+        if (err) {
+          return res.status(500).json({
+            success: false,
+            message: "There is no such table",
+            data: [],
+          });
+        }
+        if (properties && Object.keys(properties).length) {
+          return res.status(200).json({
+            success: true,
+            message: "Properties found successfully!",
+            data: { properties },
+          });
+        }
+        return res.status(200).json({
+          success: true,
+          message: "No data found!",
+          data: { properties: {} },
+        });
+      }
+    );
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ success: false, message: "Error occured!", data: [] });
+  }
+});
+
+router.get("/properties", (req, res, next) => {
+  try {
+    con.query(
+      `SELECT * FROM properties;`,
+      (err, properties) => {
+        if (err) {
+          return res.status(500).json({
+            success: false,
+            message: "There is no such table",
+            data: [],
+          });
+        }
+console.log(properties)
+        // if (properties && Object.keys(properties).length) {
+          return res.status(200).json({
+            success: true,
+            message: "Properties found successfully!",
+            data: { properties },
+          });
+       // }
+        return res.status(200).json({
+          success: true,
+          message: "No data found!",
+          data: { properties: [] },
+        });
+      }
+    );
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ success: false, message: "Error occured!", data: [] });
+  }
 });
 
 module.exports = router;

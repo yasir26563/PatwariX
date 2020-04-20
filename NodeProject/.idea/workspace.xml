@@ -19,7 +19,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="10.16.3" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/routes" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
@@ -53,6 +53,7 @@
       <updated>1584009927291</updated>
       <workItem from="1584009930280" duration="6514000" />
       <workItem from="1584615233611" duration="21289000" />
+      <workItem from="1587056535835" duration="2329000" />
     </task>
     <servers />
   </component>
